@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ public class Cookie implements CookieProcessor {
   private static Logger logger = Logger.getLogger(Cookie.class.getName());
 
   private final List<String> cookieData;
-  private final TreeMap<Date, String> cookieSortedData;
+  private final TreeMap<Long, String> cookieSortedData;
 
   public Cookie() {
     cookieData = new ArrayList<>();
@@ -53,13 +55,14 @@ public class Cookie implements CookieProcessor {
     // printing cookie data
     logger.log(Level.INFO, cookieData.toString());
     // storing cookie data in treemap
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
     try {
       for (String eachCookieUsage : cookieData) {
-        cookieSortedData.put(df.parse(eachCookieUsage.strip().split(",")[1]),
+        long millis = OffsetDateTime.parse(eachCookieUsage.strip().split(",")[1],
+            DateTimeFormatter.ISO_OFFSET_DATE_TIME).toInstant().toEpochMilli();
+        cookieSortedData.put(millis,
             eachCookieUsage.strip().split(",")[0]);
       }
-    } catch (ParseException e) {
+    } catch (Exception e) {
       logger.log(Level.SEVERE, "invalid date format");
       throw new IllegalArgumentException("invalid date format");
     }
@@ -88,9 +91,9 @@ public class Cookie implements CookieProcessor {
     Date theNextDayOfDateToBeConsidered =
         new Date(dateToBeConsidered.getTime() + 24 * 60 * 60 * 1000);
     // using treeset to reduce search space
-    TreeMap<Date, String> searchSpace =
-        (TreeMap<Date, String>) cookieSortedData.subMap(dateToBeConsidered, true,
-            theNextDayOfDateToBeConsidered, false);
+    TreeMap<Long, String> searchSpace =
+        (TreeMap<Long, String>) cookieSortedData.subMap(dateToBeConsidered.getTime(), true,
+            theNextDayOfDateToBeConsidered.getTime(), false);
     if (searchSpace == null || searchSpace.size() == 0) {
       return result;
     }
