@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,8 +101,9 @@ public class Cookie implements CookieProcessor {
       maxCookiesCount = Math.max(maxCookiesCount, cookieCountOfTheDay.get(eachCookie));
     }
     for (Map.Entry<String, Integer> eachCookieCount : cookieCountOfTheDay.entrySet()) {
-      if (eachCookieCount.getValue() == maxCookiesCount)
+      if (eachCookieCount.getValue() == maxCookiesCount) {
         result.add(eachCookieCount.getKey());
+      }
     }
     return result;
   }
