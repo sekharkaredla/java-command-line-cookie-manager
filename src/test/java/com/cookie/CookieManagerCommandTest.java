@@ -19,7 +19,6 @@ public class CookieManagerCommandTest {
     try (ApplicationContext ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)) {
       String[] args = new String[] {"active"};
       PicocliRunner.run(CookieManagerCommand.class, ctx, args);
-
       // Cookie-Manager
       assertTrue(baos.toString().contains("empty file path"));
     }

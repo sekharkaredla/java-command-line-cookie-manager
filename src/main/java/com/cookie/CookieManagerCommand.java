@@ -2,12 +2,8 @@ package com.cookie;
 
 import com.cookie.active.ActiveCookie;
 import io.micronaut.configuration.picocli.PicocliRunner;
-import io.micronaut.context.ApplicationContext;
-
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
 
 @Command(name = "Cookie-Manager", description = "...",
     mixinStandardHelpOptions = true, subcommands = {ActiveCookie.class})
@@ -21,9 +17,8 @@ public class CookieManagerCommand implements Runnable {
   }
 
   public void run() {
-    // business logic here
     if (verbose) {
-      System.out.println("Hi!");
+      System.out.println("Cookie Manager CLI says \"How you doin?\"");
     }
   }
 }
