@@ -10,20 +10,20 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 @Command(name = "Cookie-Manager", description = "...",
-        mixinStandardHelpOptions = true, subcommands = {ActiveCookie.class})
+    mixinStandardHelpOptions = true, subcommands = {ActiveCookie.class})
 public class CookieManagerCommand implements Runnable {
 
-    @Option(names = {"-v", "--verbose"}, description = "...")
-    boolean verbose;
+  @Option(names = {"-v", "--verbose"}, description = "...")
+  boolean verbose;
 
-    public static void main(String[] args) throws Exception {
-        PicocliRunner.run(CookieManagerCommand.class, args);
-    }
+  public static void main(String[] args) throws Exception {
+    PicocliRunner.run(CookieManagerCommand.class, args);
+  }
 
-    public void run() {
-        // business logic here
-        if (verbose) {
-            System.out.println("Hi!");
-        }
+  public void run() {
+    // business logic here
+    if (verbose) {
+      System.out.println("Hi!");
     }
+  }
 }
