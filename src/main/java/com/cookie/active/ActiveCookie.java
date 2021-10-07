@@ -1,10 +1,7 @@
 package com.cookie.active;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import com.cookie.details.Cookie;
+import com.cookie.details.CookieProcessor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import picocli.CommandLine.Command;
@@ -16,34 +13,31 @@ public final class ActiveCookie implements Runnable {
 
   private static Logger logger = Logger.getLogger(ActiveCookie.class.getName());
 
+  private CookieProcessor cookieProcessor;
+
   @Option(names = {"-f", "--file"}, description = "File we want to process")
   String filePath = "";
 
+  @Option(names = {"-d", "--date"}, description = "Date for which we want the most active cookie")
+  String date = "";
+
   @Override
   public void run() {
-    // checking if filePath has been given or not
-    if (filePath == null || filePath.equals("")) {
-      logger.log(Level.SEVERE, "empty file path");
+    cookieProcessor = new Cookie();
+    //trying to read the file
+    try {
+      cookieProcessor.readLogFile(filePath);
+    } catch (IllegalArgumentException e) {
+      logger.log(Level.SEVERE, "error while processing the file");
+      System.out.println("error while processing the file : " + e.getMessage());
       return;
     }
-    // trying to open the file
-    File file = new File(filePath);
-    Scanner sc = null;
+    // trying to get the most used cookie
     try {
-      sc = new Scanner(file);
-    } catch (FileNotFoundException e) {
-      logger.log(Level.SEVERE, "file not found");
+      System.out.println(cookieProcessor.getMostActiveCookie(date));
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "error while getting most active cookie");
+      System.out.println("error while getting most active cookie : " + e.getMessage());
     }
-    // now will read the file and gather all the cookie data
-    List<String> cookieData = new ArrayList<>();
-    while (true) {
-      assert sc != null;
-      if (!sc.hasNext()) {
-        break;
-      }
-      cookieData.add(sc.nextLine().strip());
-    }
-    // printing cookie data
-    logger.log(Level.INFO, cookieData.toString());
   }
 }

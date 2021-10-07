@@ -1,5 +1,7 @@
 package com.cookie.details;
 
+import java.util.List;
+
 /**
  * This interface models the behaviour of cookie processor.
  *
@@ -18,9 +20,10 @@ public interface CookieProcessor {
    * Get most active cookie on a given day.
    *
    * @param date - date in String format.
+   * @return - list of most active cookies of that day
    * @throws IllegalArgumentException - if given date is invalid.
-   * @throws IllegalStateException    - if data has been not loaded.
+   * @throws IllegalStateException - if data has been not loaded.
    */
-  public void getMostActiveCookie(String date)
+  public List<String> getMostActiveCookie(String date)
       throws IllegalArgumentException, IllegalStateException;
 }
