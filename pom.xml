@@ -88,6 +88,28 @@
 
   <build>
     <plugins>
+        <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <version>0.9.5</version>
+            <executions>
+                <execution>
+                    <id>build-native</id>
+                    <goals>
+                        <goal>build</goal>
+                    </goals>
+                    <phase>package</phase>
+                </execution>
+            </executions>
+          <configuration>
+            <imageName>cookie-monster</imageName>
+            <mainClass>com.cookie.CookieManagerCommand</mainClass>
+            <buildArgs>
+              <buildArg>--no-fallback</buildArg>
+            </buildArgs>
+            <skip>false</skip>
+          </configuration>
+        </plugin>
       <plugin>
         <groupId>io.micronaut.build</groupId>
         <artifactId>micronaut-maven-plugin</artifactId>
