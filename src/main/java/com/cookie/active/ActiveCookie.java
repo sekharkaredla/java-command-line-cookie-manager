@@ -2,8 +2,7 @@ package com.cookie.active;
 
 import com.cookie.details.Cookie;
 import com.cookie.details.CookieProcessor;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.SortedMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import picocli.CommandLine.Command;
@@ -27,7 +26,7 @@ public final class ActiveCookie implements Runnable {
   public void run() {
     cookieProcessor = new Cookie();
     //trying to read the file
-    TreeMap<Long, String> data;
+    SortedMap<Long, String> data;
     try {
       data = cookieProcessor.readLogFile(filePath);
     } catch (IllegalArgumentException e) {

@@ -27,7 +27,7 @@ public class Cookie implements CookieProcessor {
   private static Logger logger = Logger.getLogger(Cookie.class.getName());
 
   private final List<String> cookieData;
-  private final TreeMap<Long, String> cookieSortedData;
+  private final SortedMap<Long, String> cookieSortedData;
 
   public Cookie() {
     cookieData = new ArrayList<>();
@@ -35,7 +35,7 @@ public class Cookie implements CookieProcessor {
   }
 
   @Override
-  public TreeMap<Long, String> readLogFile(String filePath) throws IllegalArgumentException {
+  public SortedMap<Long, String> readLogFile(String filePath) throws IllegalArgumentException {
     if (filePath == null || filePath.equals("")) {
       throw new IllegalArgumentException("invalid file path");
     }
@@ -71,7 +71,7 @@ public class Cookie implements CookieProcessor {
   }
 
   @Override
-  public List<String> getMostActiveCookie(TreeMap<Long, String> data, String date)
+  public List<String> getMostActiveCookie(SortedMap<Long, String> data, String date)
       throws IllegalArgumentException, IllegalStateException {
     List<String> result = new ArrayList<>();
     if (data.size() == 0) {
@@ -93,8 +93,9 @@ public class Cookie implements CookieProcessor {
     Date theNextDayOfDateToBeConsidered =
         new Date(dateToBeConsidered.getTime() + 24 * 60 * 60 * 1000);
     // using treeset to reduce search space
+    TreeMap<Long, String> treeMapForReducingSearchSpace = new TreeMap<>(data);
     SortedMap<Long, String> searchSpace =
-        data.subMap(dateToBeConsidered.getTime(), true,
+        treeMapForReducingSearchSpace.subMap(dateToBeConsidered.getTime(), true,
             theNextDayOfDateToBeConsidered.getTime(), false);
     if (searchSpace == null || searchSpace.size() == 0) {
       return result;
