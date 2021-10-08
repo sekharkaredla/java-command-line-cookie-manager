@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ public class Cookie implements CookieProcessor {
   }
 
   @Override
-  public void readLogFile(String filePath) throws IllegalArgumentException {
+  public TreeMap<Long, String> readLogFile(String filePath) throws IllegalArgumentException {
     if (filePath == null || filePath.equals("")) {
       throw new IllegalArgumentException("invalid file path");
     }
@@ -66,13 +67,14 @@ public class Cookie implements CookieProcessor {
       logger.log(Level.SEVERE, "invalid date format");
       throw new IllegalArgumentException("invalid date format");
     }
+    return cookieSortedData;
   }
 
   @Override
-  public List<String> getMostActiveCookie(String date)
+  public List<String> getMostActiveCookie(TreeMap<Long, String> data, String date)
       throws IllegalArgumentException, IllegalStateException {
     List<String> result = new ArrayList<>();
-    if (cookieData.size() == 0) {
+    if (data.size() == 0) {
       logger.log(Level.SEVERE, "log file not yet processed");
       throw new IllegalStateException("log file not yet processed");
     }
@@ -91,8 +93,8 @@ public class Cookie implements CookieProcessor {
     Date theNextDayOfDateToBeConsidered =
         new Date(dateToBeConsidered.getTime() + 24 * 60 * 60 * 1000);
     // using treeset to reduce search space
-    TreeMap<Long, String> searchSpace =
-        (TreeMap<Long, String>) cookieSortedData.subMap(dateToBeConsidered.getTime(), true,
+    SortedMap<Long, String> searchSpace =
+        data.subMap(dateToBeConsidered.getTime(), true,
             theNextDayOfDateToBeConsidered.getTime(), false);
     if (searchSpace == null || searchSpace.size() == 0) {
       return result;

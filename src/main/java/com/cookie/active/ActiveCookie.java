@@ -2,6 +2,8 @@ package com.cookie.active;
 
 import com.cookie.details.Cookie;
 import com.cookie.details.CookieProcessor;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import picocli.CommandLine.Command;
@@ -25,8 +27,9 @@ public final class ActiveCookie implements Runnable {
   public void run() {
     cookieProcessor = new Cookie();
     //trying to read the file
+    TreeMap<Long, String> data;
     try {
-      cookieProcessor.readLogFile(filePath);
+      data = cookieProcessor.readLogFile(filePath);
     } catch (IllegalArgumentException e) {
       logger.log(Level.SEVERE, "error while processing the file");
       System.out.println("error while processing the file : " + e.getMessage());
@@ -34,7 +37,7 @@ public final class ActiveCookie implements Runnable {
     }
     // trying to get the most used cookie
     try {
-      System.out.println(cookieProcessor.getMostActiveCookie(date));
+      System.out.println(cookieProcessor.getMostActiveCookie(data, date));
     } catch (Exception e) {
       logger.log(Level.SEVERE, "error while getting most active cookie");
       System.out.println("error while getting most active cookie : " + e.getMessage());
